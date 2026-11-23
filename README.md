@@ -1,11 +1,10 @@
 # GitHub Repository URL
-> 
+> https://github.com/2026-2-WebService/assign12-c01-22200252
 # Render Deployment URL
 > 
 
 # Source Code Exploration & Analysis
-## Source Code Analysis
-### ① Source Code Analysis
+## ① Source Code Analysis
 * Project Structure & JPA
   1. BookController, BookService, BookRepository의 역할과 요청 처리 흐름을 설명하세요.
     ```text
@@ -64,9 +63,21 @@
     /swagger-ui.html는 OpenAPI 명세를 웹 화면에 표시하고 테스트하는 도구입니다. 
     ```
 
-### ② Line-by-Line Code Comments
+## ② Line-by-Line Code Comments
 * BookController.create() — @Valid, DTO, ResponseEntity, 201 응답
 * BookService.findById() — Repository 조회, Optional, 404 예외 발생
-  * BookController.list() 또는 BookService.findAll() — Pageable, Page, DTO 변환
-  주요 실행 코드의 목적과 데이터 흐름을 설명합니다. import, 중괄호 등 단순 문법은 제외 가능합니다.
-  기존 CRUD는 정상 동작해야 합니다.
+* BookController.list() 또는 BookService.findAll() — Pageable, Page, DTO 변환
+
+# DTO & HTTP Response Refactoring
+## 변경 전
+DTO 변경 전에는 요청 JSON이 들어오게 되면 Controller가 Book Entity로 받고 Service가 그 Entity를 저장하고 Book Entity가 응답으로 나갑니다.
+
+가장 명확한 차이는 POST 요청으로 비교할 수 있습니다. 
+Controller가 일반 Book을 반환하므로 응답 상태는 200 OK입니다.
+![01_sample_post.png](results/01_sample_post.png)
+
+## 변경 후 
+DTO 변경 후에는 요청 JSON이 들어오게 되면 Controller가 BookRequest로 받고 Service가 그 Entity를 만들어서 저장하고 저장된 Book Entity가 BookResponse로 변환되어 응답으로 나갑니다.
+
+Controller가 ResponseEntity.created(...)를 반환하므로 응답 상태는 201 Created입니다.
+![02_dto_created.png](results/02_dto_created.png)
