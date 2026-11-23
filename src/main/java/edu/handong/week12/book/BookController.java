@@ -1,6 +1,7 @@
 package edu.handong.week12.book;
 
 import org.springframework.http.ResponseEntity;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -26,7 +27,7 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<BookResponse> create(@RequestBody BookRequest request) {
+    public ResponseEntity<BookResponse> create(@Valid @RequestBody BookRequest request) {
         BookResponse created = service.create(request);
         return ResponseEntity
                 .created(URI.create("/api/books/" + created.id()))
@@ -34,7 +35,7 @@ public class BookController {
     } // TODO: @Valid
 
     @PutMapping("/{id}")
-    public BookResponse update(@PathVariable Long id, @RequestBody BookRequest request) {
+    public BookResponse update(@PathVariable Long id, @Valid @RequestBody BookRequest request) {
         return service.update(id, request);
     }
 

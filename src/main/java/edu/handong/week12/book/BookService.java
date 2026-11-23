@@ -34,10 +34,10 @@ public class BookService {
   }
 
   public void delete(Long id) {
-    repository.deleteById(id);
-  } // TODO: 404 if absent
+    repository.delete(findEntity(id));
+  }
 
   private Book findEntity(Long id) {
-    return repository.findById(id).orElseThrow();
+    return repository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
   }
 }
