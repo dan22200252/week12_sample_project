@@ -1,9 +1,29 @@
-# GitHub Repository URL
+# Project Information
+## 프로젝트 소개
+### Spring Boot REST API Advanced Customizing & Deployment
+* 강의로부터 제공 받은 Book REST API Sample Project 실행 및 Spring Boot/JPA CRUD의 흐름 분석
+* 12주차 강의 및 Lab 1~4의 내용 적용하여 REST API 고도화
+* 최종 Render에 배포
+
+## GitHub Repository URL
 > https://github.com/2026-2-WebService/assign12-c01-22200252
-# Render Deployment URL
+## Render Deployment URL
 > 
 
-# Source Code Exploration & Analysis
+---
+
+# Installation
+## 환경 설정
+  * Java 17과 MariaDB를 사용합니다.
+  * DB_URL, DB_USERNAME, DB_PASSWORD는 로컬 시스템 변수와 Render의 Environment Variables에 설정했습니다.
+
+## 실행 방법
+  * 로컬 실행: IntelliJ에서 Week12Application 실행 후 http://localhost:8080/posts 로 접속합니다.
+  * Render를 통해 배포된 페이지로 접속: 
+
+---
+
+# Source Code Exploration
 ## ① Source Code Analysis
 * Project Structure & JPA
   1. BookController, BookService, BookRepository의 역할과 요청 처리 흐름을 설명하세요.
@@ -68,16 +88,57 @@
 * BookService.findById() — Repository 조회, Optional, 404 예외 발생
 * BookController.list() 또는 BookService.findAll() — Pageable, Page, DTO 변환
 
-# DTO & HTTP Response Refactoring
-## 변경 전
+---
+
+# Refactoring
+## DTO와 ResponseEntity 변경 전
 DTO 변경 전에는 요청 JSON이 들어오게 되면 Controller가 Book Entity로 받고 Service가 그 Entity를 저장하고 Book Entity가 응답으로 나갑니다.
 
 가장 명확한 차이는 POST 요청으로 비교할 수 있습니다. 
 Controller가 일반 Book을 반환하므로 응답 상태는 200 OK입니다.
 ![01_sample_post.png](results/01_sample_post.png)
 
-## 변경 후 
+## DTO와 ResponseEntity 변경 후 
 DTO 변경 후에는 요청 JSON이 들어오게 되면 Controller가 BookRequest로 받고 Service가 그 Entity를 만들어서 저장하고 저장된 Book Entity가 BookResponse로 변환되어 응답으로 나갑니다.
 
 Controller가 ResponseEntity.created(...)를 반환하므로 응답 상태는 201 Created입니다.
 ![02_dto_created.png](results/02_dto_created.png)
+
+---
+
+# New Features
+## Validation
+Controller의 POST와 PUT 요청에서 `@Valid`로 검증을 실행합니다. `BookRequest`에 `@NotBlank`를 적용하여 제목과 저자가 빈 값으로 등록되지 않게 했습니다. 또한 `@Min(0)`을 적용하여 가격이 음수값으로 등록되지 않게 했습니다.
+
+* 잘못된 요청 검증 결과
+![03_validation.png](results/03_validation.png)
+
+## 공통 예외 처리
+`@RestControllerAdvice`와 `@ExceptionHandler`를 사용하여 요청 처리 중 발생한 예외를 공통 처리합니다. 존재하지 않는 도서 IDdp 대해 조회, 수정, 삭제를 시도했을 떄 `404 Not Found` 오류 응답을 반환합니다.
+
+* 잘못된 요청 공통 예외 처리 결과
+
+  | 요청 | 결과 |
+  |---|---|
+  | `GET /api/books/999` | 404 Not Found |
+  | `PUT /api/books/999` | 404 Not Found |
+  | `DELETE /api/books/999` | 404 Not Found |
+  ![04_not_found_get.png](results/04_not_found_get.png)
+  ![04_not_found_put.png](results/04_not_found_put.png)
+  ![04_not_found_delete.png](results/04_not_found_delete.png)
+
+## Pagination/Sorting
+## Swagger
+
+---
+
+# Testing & Deployment
+## results/ 스크린샷
+## 배포 URL
+
+---
+
+# Weekly Review
+## 새롭게 배운 내용 3가지
+## 어려웠던 점과 해결 방법
+## AI 활용 내용 및 느낀 점
