@@ -8,7 +8,7 @@
 ## GitHub Repository URL
 > https://github.com/2026-2-WebService/assign12-c01-22200252
 ## Render Deployment URL
-> 
+> https://week12-sample-project-bdn7.onrender.com
 
 ---
 
@@ -254,6 +254,7 @@ Controller의 POST와 PUT 요청에서 `@Valid`로 검증을 실행합니다. `B
 ![06_swagger.png](results/06_swagger.png)
 
 ## 배포 URL
+https://week12-sample-project-bdn7.onrender.com
 
 ---
 
